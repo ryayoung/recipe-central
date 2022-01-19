@@ -11,20 +11,26 @@ class lab03 {
   asyncFileRead(filename, callback) {
       fs.readFile(filename, function (err, data) {
           if (err) return console.error(err);
-          callback(data.toString());
+          else {
+              return callback(data.toString());
+          }
       });
   }
 
   compressFileStream(inputFile, outputFile) {
-      return fs.createReadStream(inputFile)
+      let writeStream = fs.createWriteStream(outputFile);
+      fs.createReadStream(inputFile)
           .pipe(zlib.createGzip())
-          .pipe(fs.createWriteStream(outputFile));
+          .pipe(writeStream);
+      return writeStream
   }
 
   decompressFileStream(inputFile, outputFile) {
-      return fs.createReadStream(inputFile)
+      let writeStream = fs.createWriteStream(outputFile);
+      fs.createReadStream(inputFile)
           .pipe(zlib.createGunzip())
-          .pipe(fs.createWriteStream(outputFile));
+          .pipe(writeStream);
+      return writeStream
   }
 
   listDirectoryContents(dir, callback) {

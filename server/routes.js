@@ -4,6 +4,7 @@
 
 import errors from './components/errors';
 import path from 'path';
+
 import * as users from './api/users';
 
 export default function(app) {
@@ -12,8 +13,8 @@ export default function(app) {
 
     // Define health route
     // TODO replace with @godaddy/terminus
-    app.route('/health')
-        .get((req, res) => res.json({status: 'OK'}));
+    // app.route('/health')
+        // .get((req, res) => res.json({status: 'OK'}));
 
     // All undefined asset or api routes should return a 404
     app.route('/:url(api|auth|components|app|bower_components|assets)/*')
