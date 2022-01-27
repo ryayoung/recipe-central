@@ -1,24 +1,23 @@
 // Maintainer:     Ryan Young
 // Last Modified:  Jan 18, 2022
 import express from 'express';
-
-import * as users from './users'
+import * as controller from './users.controller'
 
 // Declare an Express.js Router instance
 let router = express.Router();
 
 // GET methods
-router.get('/', users.listContents);
-router.get('/:id', users.findOne);
+router.get('/', controller.index);
+router.get('/:id', controller.show);
 
 // POST methods
-router.post('/', users.createUser);
+router.post('/', controller.create);
 
 // PUT method
-router.put('/:id', users.updateUser);
+router.put('/:id', controller.upsert);
 
 // DELETE method
-router.delete('/:id', users.removeUser);
+router.delete('/:id', controller.destroy);
 
 // Export the Express.js Router for other files to use (sucha as /server/routes.js)
 export {router};
