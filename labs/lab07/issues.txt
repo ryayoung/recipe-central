@@ -1,0 +1,42 @@
+Issue #1 ============================================================
+
+Showing source code, as instructed in slide deck, is not working.
+Slides: "If you want to inspect the source code for a function,
+call it without parameters or parentheses:" 
+Example: `db.towns.insert`
+
+Here's my output when calling db.towns.insert:
+----------------------------------------------
+book> db.towns.insert
+[Function: insert] AsyncFunction {
+  apiVersions: [ 1, Infinity ],
+  serverVersions: [ '0.0.0', '3.6.0' ],
+  deprecated: true,
+  returnsPromise: true,
+  topologies: [ 'ReplSet', 'Sharded', 'LoadBalanced', 'Standalone' ],
+  returnType: { type: 'unknown', attributes: {} },
+  platforms: [ 0, 1, 2 ],
+  isDirectShellCommand: false,
+  acceptsRawInput: false,
+  shellCommandCompleter: undefined,
+  help: [Function (anonymous)] Help
+}
+----------------------------------------------
+
+I get the same output for db.collections.insert, .findOne, .stats, etc.
+
+
+
+Issue #2 ============================================================
+
+Calling db.towns.help just lists the help commands instead of source code
+
+
+
+Issue #3 ============================================================
+
+Deprecation warnings:
+DeprecationWarning: Collection.insert() is deprecated. Use insertOne, insertMany, or bulkWrite.
+DeprecationWarning: Collection.update() is deprecated. Use updateOne, updateMany, or bulkWrite.
+
+Is this okay?

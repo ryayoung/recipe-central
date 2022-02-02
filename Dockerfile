@@ -32,6 +32,7 @@ RUN apt-get update && apt-get install -yq \
     libz-dev \
     mongodb-org-shell \
     mongodb-org-tools \
+    mongodb-mongosh \
     nasm \
     python-pytest \
     unzip \

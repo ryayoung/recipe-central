@@ -1,0 +1,8 @@
+PyMongo website
+https://pymongo.readthedocs.io/en/stable/
+
+MongoDB's documentation for PyMongo
+https://docs.mongodb.com/drivers/pymongo/
+
+Github
+https://github.com/mongodb/mongo-python-driver

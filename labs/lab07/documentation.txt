@@ -1,0 +1,7 @@
+Mongo Documentation
+https://docs.mongodb.com/manual/
+
+Using Regex
+https://docs.mongodb.com/manual/reference/operator/query/regex/
+
+
