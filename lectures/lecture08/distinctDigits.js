@@ -25,4 +25,4 @@ distinctDigits = function(phone){
   return result;
 }
 
-db.system.js.save({_id: 'distinctDigits', value: distinctDigits})
+db.system.js.insertOne({_id: 'distinctDigits', value: distinctDigits})

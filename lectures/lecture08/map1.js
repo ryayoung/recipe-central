@@ -8,6 +8,7 @@
 ***/
 map = function() {
   var digits = distinctDigits(this);
+    // Emit key is Math.floor(this.location.longitude)
   emit({
     digits: digits,
     country: this.components.country
