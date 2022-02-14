@@ -1,0 +1,13 @@
+MongoDB docs page: "Cursor Methods"
+https://docs.mongodb.com/manual/reference/method/js-cursor/
+
+Pymongo docs page: "cursor"
+https://pymongo.readthedocs.io/en/stable/api/pymongo/cursor.html
+
+Mongoose docs page: "QueryCursor"
+https://mongoosejs.com/docs/api/querycursor.html
+
+NOTES:
+- Cursors let you process query results one at a time
+- in Mongoose, use Query#cursor() instead of instantiating the QueryCursor class directly
+
