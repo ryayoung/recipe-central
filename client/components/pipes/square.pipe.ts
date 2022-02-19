@@ -1,5 +1,3 @@
-// Maintainer:     Ryan Young
-// Last Modified:  Feb 15, 2022
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({

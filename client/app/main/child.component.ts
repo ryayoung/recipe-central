@@ -15,7 +15,7 @@ export class ChildComponent {
 
     constructor() { }
 
-    private clicked($event) {
+    public clicked($event) {
         this.selected.emit(true);
     }
 

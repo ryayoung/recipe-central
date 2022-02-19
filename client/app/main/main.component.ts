@@ -10,7 +10,7 @@ import {User} from '../../components/interfaces/User';
 })
 
 
-export class MainComponent {
+export class MainComponent implements OnInit {
 
     public values: string[];
     public valueToSquare: number;
@@ -23,12 +23,11 @@ export class MainComponent {
         this.userService = userService;
         this.setData();
         this.getUserData();
-        this.values = ['first', 'second', 'third'];
     }
 
     private setData() {
         this.values = ['first', 'second', 'third'];
-        this.valueToSquare = 4;
+        this.valueToSquare = 5;
     }
 
     public getUserData() {
@@ -42,6 +41,9 @@ export class MainComponent {
     private handleError(error: any): Promise<any> {
         console.error('Something has gone wrong', error);
         return Promise.reject(error.message || error);
+    }
+
+    ngOnInit() {
     }
 
     public clickEvent($event) {
