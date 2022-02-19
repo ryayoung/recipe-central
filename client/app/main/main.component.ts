@@ -10,60 +10,46 @@ import {User} from '../../components/interfaces/User';
 })
 
 
-export class MainComponent implements OnInit {
+export class MainComponent {
 
-  public values: string[];
-  public valueToSquare: number;
-  public users: User[];
-  public input: string;
-  static parameters = [HttpClient, UserService];
+    public values: string[];
+    public valueToSquare: number;
+    public users: User[];
+    public input: string;
+    static parameters = [HttpClient, UserService];
 
-  constructor(private http: HttpClient, private userService: UserService) {
-    this.http = http;
-    this.userService = userService;
-    this.setData();
-    this.getUserData();
-    this.values = ['first', 'second', 'third'];
-  }
+    constructor(private http: HttpClient, private userService: UserService) {
+        this.http = http;
+        this.userService = userService;
+        this.setData();
+        this.getUserData();
+        this.values = ['first', 'second', 'third'];
+    }
 
-  private setData() {
-    this.values = ['first', 'second', 'third'];
-    this.valueToSquare = 4;
-  }
+    private setData() {
+        this.values = ['first', 'second', 'third'];
+        this.valueToSquare = 4;
+    }
 
-  public getUserData() {
-    this.userService.getAllUsers()
-      .then(response => {
-        this.users = response.users as User[];
-      })
-      .catch(this.handleError);
-  }
+    public getUserData() {
+        this.userService.getAllUsers()
+            .then(response => {
+                this.users = response.users as User[];
+            })
+            .catch(this.handleError);
+    }
 
-  private handleError(error: any): Promise<any> {
-    console.error('Something has gone wrong', error);
-    return Promise.reject(error.message || error);
-  }
+    private handleError(error: any): Promise<any> {
+        console.error('Something has gone wrong', error);
+        return Promise.reject(error.message || error);
+    }
 
-  ngOnInit() {
-  }
+    public clickEvent($event) {
+        console.dir($event);
+    }
+
+    public selected(boolean) {
+        console.log(boolean);
+    }
+
 }
-
-
-
-
-
-// export class MainComponent implements OnInit {
-// 
-    // public values: string[];
-    // public input: string;
-// 
-    // static parameters = [HttpClient];
-    // constructor(private http: HttpClient) {
-        // this.http = http;
-        // this.values = ["fist", "second", "third"];
-    // }
-// 
-    // ngOnInit() {
-    // }
-// 
-// }

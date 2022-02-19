@@ -200,6 +200,7 @@ export function destroy(req, res) {
     })
     // Address or user delete failed
     .catch(function(err) {
+      console.log("Hello")
       res.status(400);
       res.send(err);
     });
