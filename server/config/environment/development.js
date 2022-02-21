@@ -16,7 +16,7 @@ module.exports = _.merge(
     // MongoDB connection options
     mongo: {
         useMongoClient: true,
-        uri: process.env.MONGODB_URI || 'mongodb://web2-mongodb/web2-ryayoung'
+        uri: process.env.MONGODB_URI || 'mongodb://web2-mongodb/web2-ryayoung-project1'
     },
     // Seed database on startup
         seedDB: true

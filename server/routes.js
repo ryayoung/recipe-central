@@ -6,10 +6,13 @@ import errors from './components/errors';
 import path from 'path';
 
 import * as users from './api/users';
+import * as recipes from './api/recipes';
 
 export default function(app) {
     // Custom API routes go here
     app.use('/api/users', users.router);
+    app.use('/api/recipes', recipes.router);
+
 
     // Define health route
     // TODO replace with @godaddy/terminus

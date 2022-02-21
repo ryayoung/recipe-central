@@ -5,6 +5,7 @@ let router = express.Router();
 
 // GET methods
 router.get('/', controller.index);
+router.get('/by', controller.showBy);
 router.get('/:id', controller.show);
 
 // POST method
