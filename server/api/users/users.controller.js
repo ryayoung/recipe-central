@@ -117,7 +117,7 @@ export function update(req, res) {
                 existingUser.username = req.body.username.trim();
                 existingUser.email = req.body.email.trim();
 
-                return existingUser.save()
+                return existingUser.save();
 
             } else {
                 // User was not found
@@ -135,7 +135,6 @@ export function update(req, res) {
         })
         .catch(function(err) {
             res.status(400);
-            console.log(err);
             res.send(err);
         });
 }
@@ -152,7 +151,7 @@ export function destroy(req, res) {
         .exec()
         .then(function(existingUser) {
             if(existingUser) {
-                return existingUser.remove();
+                return existingUser.remove()
             } else {
                 return existingUser;
             }
@@ -190,8 +189,8 @@ export function destroyBy(req, res) {
         .exec()
         .then(function(deletedUsers) {
             if (deletedUsers.deletedCount > 0) {
-                res.status(204);
-                res.send("Deleted " + deletedUsers.deletedCount + " users.")
+                res.status(200);
+                res.send({deletedCount : deletedUsers.deletedCount});
             } else {
                 res.status(404);
                 res.json({message : 'None found'});

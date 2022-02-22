@@ -26,16 +26,19 @@ router.delete('/:id', recipeController.destroy);
 
 // - GET -------
 router.get('/:id/reviews/', reviewController.index);
-router.get('/:id/reviews/:id', reviewController.show);
+// router.get('/:id/reviews/:id', reviewController.show);
+router.get('/reviews/:id', reviewController.show);
 
 // - POST ------
 router.post('/:id/reviews/', reviewController.create);
 
 // - PUT -------
-router.put('/:id/reviews/:id', reviewController.update);
+// router.put('/:id/reviews/:id', reviewController.update);
+router.put('/reviews/:id', reviewController.update);
 
 // - DELETE ----
-router.delete('/:id/reviews/:id', reviewController.destroy);
+// router.delete('/:id/reviews/:id', reviewController.destroy);
+router.delete('/:id/reviews/', reviewController.destroy);
 
 
 // EXPORT ------------
