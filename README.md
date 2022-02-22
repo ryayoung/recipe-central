@@ -1,5 +1,5 @@
 <!-- Maintainer:     Ryan Young -->
-<!-- Last Modified:  Feb 21, 2022 -->
+<!-- Last Modified:  Feb 22, 2022 -->
 # Recipe Server API
 
 ## Reference Index
@@ -320,6 +320,12 @@ let reviewSchema = Schema({
 	- Returns the user for the id provided as a path variable.
 	- Provided id must be a valid ObjectId
 
+<a name="users_get_reviews"></a>
+
+- `GET /users/:id/reviews`
+	- Returns an array of the user's reviews, each tagged with the ID of the recipe it was posted for.
+	- Each array element contains two fields: `data` (review content) and `recipe_id`
+
 <a name="users_post"></a>
 
 - `POST /users/`
@@ -356,6 +362,7 @@ let reviewSchema = Schema({
 
 - `GET /recipes/`
 	- Returns all recipes, with the `reviews` array containing only ObjectIds
+    - Pass query parameter, `mode`, with value `extended` to include array of full review documents
 
 <a name="recipes_get"></a>
 

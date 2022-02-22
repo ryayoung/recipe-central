@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 let ObjectId = mongoose.Types.ObjectId;
 
 import { User } from './users.model';
+import { Review, Recipe } from '../recipes/recipes.model';
 
 // Use this instead of ObjectId.isValid(id)
 import { isValidObjectId } from '../util/validation/isValidObjectId';
@@ -75,6 +76,49 @@ export function showBy(req, res) {
             res.status(500);
             res.send(err);
         });
+}
+
+
+// Find all reviews for user: GET '/:id/reviews'
+export function showReviews(req, res) {
+    /* Returns an array of all reviews user has posted.
+     * NOTE: Each review will be tagged with the ID of the recipe it was posted for
+     * So each list element will contain two elements: data (review object) and recipe_id
+    */ 
+    // ID must be valid mongodb ObjectId format
+    if (!isValidObjectId(req.params.id)) {
+        res.status(400);
+        res.send('Error: Invalid ID format: "' + req.params.id + '"')
+        return
+    }
+    Review.find({user_id : req.params.id})
+        .exec()
+        .then(function(reviews) {
+            let reviewIds = reviews.map(s => s._id)
+
+            Recipe.find({reviews : {$in : reviewIds}})
+                .then(function(recipes) {
+                    if (recipes) {
+                        reviews = reviews.map(function(e, i) {
+                            let recipeTag = {recipe_id : recipes[i]._id};
+                            return {
+                                data : e,
+                                recipe_id : recipes[i]._id
+                            }
+                        })
+                        res.status(200);
+                        res.json({ reviews });
+                    } else {
+                        res.status(400);
+                        res.json({ message : 'None found' });
+                    }
+                })
+        })
+        .catch(function(err) {
+            res.status(500);
+            res.send(err);
+        })
+        
 }
 
 

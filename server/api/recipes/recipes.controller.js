@@ -7,7 +7,13 @@ import { isValidObjectId } from '../util/validation/isValidObjectId';
 
 // Find all: GET '/'
 export function index(req, res) {
+    // Pass key: 'mode', value: 'extended' as query param to see full review documents
+    let populateString = ''
+    if (req.query.mode == 'extended') {
+        populateString = 'reviews';
+    }
     Recipe.find()
+        .populate(populateString)
         .exec()
         .then(function(recipes) {
             res.json({ recipes });
@@ -30,10 +36,6 @@ export function show(req, res) {
         .populate('reviews')
         .exec()
         .then(function(existingRecipe) {
-            /*
-            findById will return null if the object was not found
-            This if check will evaluate to false for a null recipe
-            */
             if(existingRecipe) {
                 // Recipe was found by Id
                 res.status(200);

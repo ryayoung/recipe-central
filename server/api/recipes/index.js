@@ -37,8 +37,8 @@ router.post('/:id/reviews/', reviewController.create);
 router.put('/reviews/:id', reviewController.update);
 
 // - DELETE ----
-// router.delete('/:id/reviews/:id', reviewController.destroy);
-router.delete('/:id/reviews/', reviewController.destroy);
+router.delete('/reviews/by', reviewController.destroyBy);
+router.delete('/reviews/:id', reviewController.destroy);
 
 
 // EXPORT ------------

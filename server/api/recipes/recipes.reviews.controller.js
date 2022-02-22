@@ -118,8 +118,8 @@ export function update(req, res) {
 
 // Remove existing review: DELETE '/:id/reviews/'
 export function destroy(req, res) {
-    let recipeId = req.params.id;
-    let reviewId = req.query.id;
+    // let recipeId = req.params.id;
+    let reviewId = req.params.id;
 
     Review.findById(reviewId)
         .then(function(existingReview) {
@@ -130,7 +130,7 @@ export function destroy(req, res) {
             }
         })
         .then(function(existingReview) {
-            Recipe.findOneAndUpdate({_id : recipeId}, {$pull: {reviews : reviewId}})
+            Recipe.findOneAndUpdate({reviews : reviewId}, {$pull: {reviews : reviewId}})
                 .then(function(updatedRecipe) {
                     if (updatedRecipe) {
                         res.status(200);
@@ -147,3 +147,31 @@ export function destroy(req, res) {
         });
 }
 
+// Remove multiple reviews : DELETE '/reviews/by'
+export function destroyBy(req, res) {
+    let identifiers = req.query.ids.split(',');
+    identifiers = identifiers.map(s => ObjectId(s));
+
+    Review.find()
+        .where('_id')
+        .in(identifiers)
+        .remove()
+        .exec()
+        .then(function(reviews) {
+            // let exitingReviewIds = reviews.map(s => s._id);
+            Recipe.update({reviews : {$in : identifiers}}, {$pull : {reviews : {$in : identifiers}}})
+                .then(function(updatedRecipes) {
+                    if (updatedRecipes) {
+                        res.status(200);
+                        res.json(updatedRecipes)
+                    } else {
+                        res.status(404);
+                        res.json({message : 'None found'})
+                    }
+                })
+        })
+        .catch(function(err) {
+            res.status(400);
+            res.send(err);
+        })
+}

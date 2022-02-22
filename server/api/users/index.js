@@ -7,6 +7,7 @@ let router = express.Router();
 router.get('/', controller.index);
 router.get('/by', controller.showBy);
 router.get('/:id', controller.show);
+router.get('/:id/reviews', controller.showReviews);
 
 // POST method
 router.post('/', controller.create);
