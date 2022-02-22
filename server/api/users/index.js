@@ -15,6 +15,7 @@ router.post('/', controller.create);
 router.put('/:id', controller.update);
 
 // DELETE method
+router.delete('/by', controller.destroyBy);
 router.delete('/:id', controller.destroy);
 
 export {router};

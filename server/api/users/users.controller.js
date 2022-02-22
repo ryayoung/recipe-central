@@ -4,45 +4,24 @@ let ObjectId = mongoose.Types.ObjectId;
 
 import { User } from './users.model';
 
-// To use instead of ObjectId.isValid(id)
+// Use this instead of ObjectId.isValid(id)
 import { isValidObjectId } from '../util/validation/isValidObjectId';
 
-// Find all Users
+// FIND ALL: GET '/'
 export function index(req, res) {
-    
-    // If a comma separated list of ids was passed in query params, return those users.
-    if (req.query.ids) {
-        let ids = req.query.ids.split(',');
-        let objectIds = ids.map(s => ObjectId(s));
-        console.log(objectIds);
-        User.find()
-            .where('_id')
-            .in(objectIds)
-            .exec()
-            .then(function(users) {
-                res.json({ users });
-            })
-            .catch(function(err) {
-                res.status(500);
-                console.log(err);
-                res.send(err);
-            });
-        
-    // Return all users
-    } else {
-        User.find()
-            .exec()
-            .then(function(users) {
-                res.json({ users });
-            })
-            .catch(function(err) {
-                res.status(500);
-                res.send(err);
-            });
-    }
+    User.find()
+        .exec()
+        .then(function(users) {
+            res.json({ users });
+        })
+        .catch(function(err) {
+            res.status(500);
+            res.send(err);
+        });
 }
 
-// Find details for one user
+
+// Find one user: GET '/:id'
 export function show(req, res) {
     // ID must be valid mongodb ObjectId format
     if (!isValidObjectId(req.params.id)) {
@@ -67,99 +46,60 @@ export function show(req, res) {
         });
 }
 
+
+// Find multiple users: GET '/by'
 export function showBy(req, res) {
-    let query = {};
+    /* Given a query paramter (ids, usernames, or emails) with
+     * a comma separated string of unique identifiers, return
+     * all users listed.
+    */
 
-    // USERNAME
-    if (req.query.username) {
-        query = {username : req.query.username};
-        
-    // EMAIL
-    } else if (req.query.email) {
-        query = {email : req.query.email};
+    let searchData = getIdentifiers(req);
+    let identifiers = searchData[0]
+    let fieldName = searchData[1]
 
-    // First & last, or just last, or just first
-    } else if (req.query.first && req.query.last) {
-        // query = {$and : [{'name.last': req.query.last}, {'name.first' : req.query.first}]};
-        query = {'name.last': req.query.last, 'name.first' : req.query.first};
-
-    } else if (req.query.last) {
-        query = {'name.last': req.query.last};
-
-    } else if (req.query.first) {
-        query = {'name.first': req.query.first};
-    }
-
-    // Decide if we're finding one or many
-    if (req.query.username | req.query.email) {
-        showOneBy(req, res, query);
-    } else {
-        console.log("FINDING MANY =========================================")
-        showManyBy(req, res, query);
-    }
-}
-
-export function showOneBy(req, res, query) {
-    User.findOne(query)
+    User.find()
+        .where(fieldName)
+        .in(identifiers)
         .exec()
-        .then(function(existingUser) {
-            if (existingUser) {
+        .then(function(users) {
+            if (users) {
                 res.status(200);
-                res.json(existingUser);
+                res.json({ users });
             } else {
                 res.status(404);
-                res.json({message : 'Not Found'});
+                res.json({message : 'Not found'});
             }
         })
         .catch(function(err) {
-            res.status(400);
-            res.send(err);
-        });
-}
-
-export function showManyBy(req, res, query) {
-    User.find(query)
-        .exec()
-        .then(function(existingUsers) {
-            if (existingUsers) {
-                console.log("FOUND USER BY FIRST NAME =========================================")
-                res.status(200);
-                res.json(existingUsers);
-            } else {
-                res.status(404);
-                res.json({message : 'Not Found'});
-            }
-        })
-        .catch(function(err) {
-            res.status(400);
+            res.status(500);
             res.send(err);
         });
 }
 
 
+// Create single user: POST '/'
 export function create(req, res) {
     let user = req.body;
-
-    // TRIM WHITESPACE
+    // Trim whitespace from important information
     user.name.first = user.name.first.trim();
     user.name.last = user.name.last.trim();
     user.username = user.username.trim();
     user.email = user.email.trim();
 
-    // Start off by saving the address
     User.create(user)
         .then(function(createdUser) {
             res.status(201);
             res.json(createdUser);
         })
-        // An error was encountered during either the save of the address or the save of the user
         .catch(function(err) {
             res.status(400);
-        res.send(err);
-    });
+            res.send(err);
+        });
 }
 
-// Update a user
+
+// Update a single user: PUT '/:id'
 export function update(req, res) {
     // ID must be valid mongodb ObjectId format
     if (!isValidObjectId(req.params.id)) {
@@ -184,19 +124,15 @@ export function update(req, res) {
                 return existingUser;
             }
         })
-        // This .then will be called after the Promise.all resolves, or be called with null if the user was not found
         .then(function(savedUser) {
-            // savedObjects should be defined if Promise.all was invoked (user was found)
             if(savedUser) {
                 res.status(200);
                 res.json(savedUser);
             } else {
-                // User was not found
                 res.status(404);
                 res.json({message: 'Not Found'});
             }
         })
-        // Error encountered during the save of the user
         .catch(function(err) {
             res.status(400);
             console.log(err);
@@ -204,7 +140,7 @@ export function update(req, res) {
         });
 }
 
-// Remove a user
+// Remove a single user: DELETE '/:id'
 export function destroy(req, res) {
     // ID must be valid mongodb ObjectId format
     if (!isValidObjectId(req.params.id)) {
@@ -216,20 +152,11 @@ export function destroy(req, res) {
         .exec()
         .then(function(existingUser) {
             if(existingUser) {
-                /*
-                  This is the equivalent of cascading delete in a relational database
-                  If the user was found, remove both the user object and the address object from
-                  their respective collections. Only record the delete as successful if both objects
-                  are deleted
-                 */
-                return Promise.all([
-                    existingUser.remove()
-                ]);
+                return existingUser.remove();
             } else {
                 return existingUser;
             }
         })
-        // Delete was successful
         .then(function(deletedUser) {
             if(deletedUser) {
                 res.status(204).send();
@@ -239,11 +166,69 @@ export function destroy(req, res) {
                 res.json({message: 'Not Found'});
             }
         })
-        // Address or user delete failed
         .catch(function(err) {
-            console.log("Hello")
             res.status(400);
             res.send(err);
         });
 }
+
+
+// Remove multiple users: '/by'
+export function destroyBy(req, res) {
+    /* Given a query paramter (ids, usernames, or emails) with
+     * a comma separated string of unique identifiers, remove all
+     * users listed.
+    */
+    let searchData = getIdentifiers(req);
+    let identifiers = searchData[0]
+    let fieldName = searchData[1]
+
+    User.find()
+        .where(fieldName)
+        .in(identifiers)
+        .remove()
+        .exec()
+        .then(function(deletedUsers) {
+            if (deletedUsers.deletedCount > 0) {
+                res.status(204);
+                res.send("Deleted " + deletedUsers.deletedCount + " users.")
+            } else {
+                res.status(404);
+                res.json({message : 'None found'});
+            }
+        })
+        .catch(function(err) {
+            res.status(400);
+            res.send(err);
+        });
+}
+
+
+// HELPER FUNCTIONS
+function getIdentifiers(req) {
+    /* Given a query parameter (ids, usernames, or emails)
+     * with a comma separated string of identifiers, return
+     * them in a list. For 'ids' this must be list of ObjectIds
+    */
+    let identifiers
+    let fieldName
+    // IDS
+    if (req.query.ids) {
+        identifiers = req.query.ids.split(',')
+        identifiers = identifiers.map(s => ObjectId(s));
+        fieldName = "_id";
+    // USERNAMES
+    } else if (req.query.usernames) {
+        identifiers = req.query.usernames.split(',');
+        fieldName = "username";
+    // EMAILS
+    } else if (req.query.emails) {
+        identifiers = req.query.emails.split(',');
+        fieldName = "email";
+    }
+    return [identifiers, fieldName]
+}
+
+
+
 
