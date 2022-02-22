@@ -39,8 +39,8 @@
 - [GET /recipes/:id/reviews/](#reviews_get_all)
 - [GET /recipes/:id/reviews/:id](#reviews_get)
 - [POST /recipes/:id/reviews/](#reviews_post)
-- [PUT /recipes/:id/reviews/:id](#reviews_put)
-- [DELETE /recipes/:id/reviews/:id](#reviews_delete)
+- [PUT /recipes/reviews/:id](#reviews_put)
+- [DELETE /recipes/:id/reviews/](#reviews_delete)
 
 <br>
 
