@@ -23,6 +23,7 @@
 - [GET /users/](#users_get_all)
 - [GET /users/by](#users_get_by)
 - [GET /users/:id](#users_get)
+- [GET /users/:id/reviews](#users_get_reviews)
 - [POST /users/](#users_post)
 - [PUT /users/:id](#users_put)
 - [DELETE /users/by](#users_delete_by)
@@ -38,9 +39,9 @@
 ### Review
 - [GET /recipes/:id/reviews/](#reviews_get_all)
 - [GET /recipes/:id/reviews/:id](#reviews_get)
-- [POST /recipes/:id/reviews/](#reviews_post)
+- [POST /recipes/:id/reviews](#reviews_post)
 - [PUT /recipes/reviews/:id](#reviews_put)
-- [DELETE /recipes/:id/reviews/](#reviews_delete)
+- [DELETE /recipes/reviews/:id](#reviews_delete)
 
 <br>
 
@@ -304,122 +305,149 @@ let reviewSchema = Schema({
 
 <a name="users_get_all"></a>
 
-- `GET /users/`
-	- Returns all users in the database
+**`GET /users/`**
+
+- Returns all users in the database
 
 <a name="users_get_by"></a>
 
 
-- `GET /users/by`
-  - Returns all requested users.  
-	- Accepts query parameters. Include ONE of the following in a comma separated string: `ids`, `usernames`, `emails`
+**`GET /users/by`**
+
+- Returns all requested users.  
+- Accepts query parameters. Include ONE of the following in a comma separated string: `ids`, `usernames`, `emails`
 
 <a name="users_get"></a>
 
-- `GET /users/:id`
-	- Returns the user for the id provided as a path variable.
-	- Provided id must be a valid ObjectId
+**`GET /users/:id`**
+
+- Returns the user for the id provided as a path variable.
+- Provided id must be a valid ObjectId
 
 <a name="users_get_reviews"></a>
 
-- `GET /users/:id/reviews`
-	- Returns an array of the user's reviews, each tagged with the ID of the recipe it was posted for.
-	- Each array element contains two fields: `data` (review content) and `recipe_id`
+**`GET /users/:id/reviews`**
+
+- Returns an array of the user's reviews, each tagged with the ID of the recipe it was posted for.
+- Each array element contains two fields: `data` (review content) and `recipe_id`
+
+**Path Variables**
+
+
+**Query Parameters**
+| Name | Type | Required | Description |
+| ---- | ---- | -------- | ----------- |
+|  |  |  |  |
 
 <a name="users_post"></a>
 
-- `POST /users/`
-	- Creates a new user
-	- Surrounding whitespace will be trimmed from `name.first`, `name.last`, `username`, and `email` before insertion
-  - Returns the created user if successful
+**`POST /users/`**
+
+- Creates a new user
+- Surrounding whitespace will be trimmed from `name.first`, `name.last`, `username`, and `email` before insertion
+- Returns the created user if successful
 
 <a name="users_put"></a>
 
-- `PUT /users/:id`
-	- Updates an existing user.
-	- Provided id must be a valid ObjectId
-	- Surrounding whitespace will be trimmed from `name.first`, `name.last`, `username`, and `email` before insertion
-	- Returns the saved user if successful
+**`PUT /users/:id`**
+
+- Updates an existing user.
+- Provided id must be a valid ObjectId
+- Surrounding whitespace will be trimmed from `name.first`, `name.last`, `username`, and `email` before insertion
+- Returns the saved user if successful
 
 <a name="users_delete_by"></a>
 
-- `DELETE /users/by`
-	- Deletes all specified users.
-	- Similar to `GET /users/by`, identifiers must be passed as a comma separated string in ONE of the following query parameters: `ids`, `usernames`, `emails`
-	- NOTE: This endpoint returns `200` if successful, instead of `204`.
-    - Return body: json containing attribute: `deletedCount` for the number of successful deletions
+**`DELETE /users/by`**
+
+- Deletes all specified users.
+- Similar to `GET /users/by`, identifiers must be passed as a comma separated string in ONE of the following query parameters: `ids`, `usernames`, `emails`
+- NOTE: This endpoint returns `200` if successful, instead of `204`.
+- Return body: json containing attribute: `deletedCount` for the number of successful deletions
 
 <a name="users_delete"></a>
 
-- `DELETE /users/:id`
-	- Deletes the user specified by ID. 
-	- Provided ID must be a valid ObjectId
-	- Returns `204` No content if successful
+**`DELETE /users/:id`**
+
+- Deletes the user specified by ID. 
+- Provided ID must be a valid ObjectId
+- Returns `204` No content if successful
 
 
 ### Recipes
 <a name="recipes_get_all"></a>
 
-- `GET /recipes/`
-	- Returns all recipes, with the `reviews` array containing only ObjectIds
-    - Pass query parameter, `mode`, with value `extended` to include array of full review documents
+**`GET /recipes/`**
+
+- Returns all recipes, with the `reviews` array containing only ObjectIds
+- Pass query parameter, `mode`, with value `extended` to include array of full review documents
 
 <a name="recipes_get"></a>
 
-- `GET /recipes/:id`
-	- Returns the recipe for a given id specified as a path variable
-	- Specified ID must be a valid ObjectId
+**`GET /recipes/:id`**
+
+- Returns the recipe for a given id specified as a path variable
+- Specified ID must be a valid ObjectId
 
 <a name="recipes_post"></a>
 
-- `POST /recipes/`
-	- Creates a new recipe for the object passed in request body
-	- Reviews CANNOT be created this way. Any reviews passed will be ignored.
-	- Returns the created recipe if successful
+**`POST /recipes/`**
+
+- Creates a new recipe for the object passed in request body
+- Reviews CANNOT be created this way. Any reviews passed will be ignored.
+- Returns the created recipe if successful
 
 <a name="recipes_put"></a>
 
-- `PUT /recipes/:id`
-	- Updates an existing recipe. The `reviews` array CANNOT be updated this way
-	- Provided ID must be a valid ObjectId
-	- Returns the saved recipe if successful
+**`PUT /recipes/:id`**
+
+- Updates an existing recipe. The `reviews` array CANNOT be updated this way
+- Provided ID must be a valid ObjectId
+- Returns the saved recipe if successful
 
 <a name="recipes_delete"></a>
 
-- `DELETE /recipes/:id`
-	- Deletes the recipe specified by ID as a path variable.
-	- All of its reviews will be deleted
-	- Returns `204` No content if successful
+**`DELETE /recipes/:id`**
+
+- Deletes the recipe specified by ID as a path variable.
+- All of its reviews will be deleted
+- Returns `204` No content if successful
 
 ### Reviews
 
 <a name="reviews_get_all"></a>
 
-- `GET /recipes/:id/reviews/`
-	- Returns all reviews for a recipe specified by ID
-	- Provided ID must be a valid ObjectId
+**`GET /recipes/:id/reviews/`**
+
+- Returns all reviews for a recipe specified by ID
+- Provided ID must be a valid ObjectId
+
 <a name="reviews_get"></a>
 
-- `GET /recipes/:id/reviews/:id`
-	- Returns a review specified by ID as a path variable. Parent recipe ID must also be given.
-	- All IDs must be valid ObjectIds
+**`GET /recipes/:id/reviews/:id`**
+
+- Returns a review specified by ID as a path variable. Parent recipe ID must also be given.
+- All IDs must be valid ObjectIds
 
 <a name="reviews_post"></a>
 
-- `POST /recipes/:id/reviews/`
-	- Creates a new review for the recipe specified by ID
-    - The `user_id` field in the json payload must represent a valid ObjectId, and it must represent an existing user
-	- Returns the created review if successful
+**`POST /recipes/:id/reviews/`**
+
+- Creates a new review for the recipe specified by ID
+- The `user_id` field in the json payload must represent a valid ObjectId, and it must represent an existing user
+- Returns the created review if successful
 
 <a name="reviews_put"></a>
 
-- `PUT /recipes/reviews/:id`
-	- Updates an existing review for an existing recipe. Provide review ID as path variable
-	- IDs must be valid ObjectIds
+**`PUT /recipes/reviews/:id`**
+
+- Updates an existing review for an existing recipe. Provide review ID as path variable
+- IDs must be valid ObjectIds
 
 <a name="reviews_delete"></a>
 
-- `DELETE /recipes/:id/reviews/`
-	- Deletes an existing review from an existing recipe. Provide recipe ID as path variable and review ID as query param
-	- IDs must be valid ObjectIds
-	- Returns `204` No content if successful
+**`DELETE /recipes/:id/reviews/`**
+
+- Deletes an existing review from an existing recipe. Provide recipe ID as path variable and review ID as query param
+- IDs must be valid ObjectIds
+- Returns `204` No content if successful
