@@ -1,5 +1,8 @@
 <!-- Maintainer:     Ryan Young -->
 <!-- Last Modified:  Feb 22, 2022 -->
+<a name="top"></a>
+
+
 # Recipe Server API
 
 ## Reference Index
@@ -41,6 +44,7 @@
 - [GET /recipes/:id/reviews/:id](#reviews_get)
 - [POST /recipes/:id/reviews](#reviews_post)
 - [PUT /recipes/reviews/:id](#reviews_put)
+- [DELETE /recipes/reviews/by](#reviews_delete_by)
 - [DELETE /recipes/reviews/:id](#reviews_delete)
 
 <br>
@@ -451,3 +455,10 @@ let reviewSchema = Schema({
 - Deletes an existing review from an existing recipe. Provide recipe ID as path variable and review ID as query param
 - IDs must be valid ObjectIds
 - Returns `204` No content if successful
+
+
+<a name="reviews_delete_by"></a>
+
+**`DELETE /recipes/reviews/by`**
+
+- Deletes a list of reviews specified by a comma separated string of `ids` as a query parameter
