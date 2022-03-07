@@ -1,22 +1,16 @@
 // Maintainer:     Ryan Young
-// Last Modified:  Feb 15, 2022
+// Last Modified:  Mar 06, 2022
+
+interface FullName {
+    first : string;
+    last : string;
+}
+
 export interface User {
   _id: string;
-  name: {
-    _id: string,
-    firstName: string,
-    middleName: string,
-    lastName: string
-  };
-  address: {
-    _id: string,
-    addressLine1: string,
-    addressLine2: string,
-    city: string,
-    state: string,
-    zip: number,
-    __v: number
-  };
-  age: number;
+  name: FullName;
+    email : string;
+    created_at : Date;
+    updated_at : Date;
   __v: number;
 }
